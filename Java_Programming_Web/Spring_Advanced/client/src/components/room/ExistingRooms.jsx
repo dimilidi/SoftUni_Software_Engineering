@@ -113,14 +113,14 @@ function ExistingRooms() {
                                 <td>{room.roomType}</td>
                                 <td>{room.roomPrice}</td>
                                 <td className="gap-2">
-                                    {/* <Link to={`/edit-room/${room.id}`} className="gap-2">
-                                    <span className="btn btn-info btn-sm">
-                                        <FaEye />
-                                    </span>
-                                    <span className="btn btn-warning btn-sm ml-5">
-                                        <FaEdit />
-                                    </span>
-                                </Link> */}
+                                    <Link to={`/edit-room/${room.id}`} className="gap-2">
+                                        <span className="btn btn-info btn-sm">
+                                            <FaEye />
+                                        </span>
+                                        <span className="btn btn-warning btn-sm ml-5">
+                                            <FaEdit />
+                                        </span>
+                                    </Link>
                                     <button
                                         className="btn btn-danger btn-sm ml-5"
                                         onClick={() => handleDelete(room.id)}>
