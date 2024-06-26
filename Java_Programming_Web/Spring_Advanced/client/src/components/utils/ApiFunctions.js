@@ -27,11 +27,31 @@ export async function addRoom(photo, roomType, roomPrice) {
 export async function getRoomTypes() {
   try {
     const response = await axios.get("http://localhost:8080/rooms/room/types");
-    console.log(response.data);
 
     return response.data;
   } catch (error) {
     throw new Error("Error fetching room types");
-    console.log("Error fetching room types");
+  }
+}
+
+// This function gets all rooms from the database
+export async function getAllRooms() {
+  try {
+    const result = await api.get("http://localhost:8080/rooms/all-rooms");
+    return result.data;
+  } catch (error) {
+    throw new Error("Error fetching rooms!");
+  }
+}
+
+/* This function deletes a room by the Id */
+export async function deleteRoom(roomId) {
+  try {
+    const result = await api.delete(
+      `http://localhost:8080/rooms/delete/room/${roomId}`
+    );
+    return result.data;
+  } catch (error) {
+    throw new Error(`Error deleting room ${error.message}`);
   }
 }
