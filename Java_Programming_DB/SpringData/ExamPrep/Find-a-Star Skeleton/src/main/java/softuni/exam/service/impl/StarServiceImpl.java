@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import softuni.exam.models.dto.jsons.ConstellationSeedDto;
 import softuni.exam.models.dto.jsons.StarSeedDto;
+import softuni.exam.models.emuns.StarTypeEnum;
 import softuni.exam.models.entity.Constellation;
 import softuni.exam.models.entity.Star;
 import softuni.exam.repository.AstronomerRepository;
@@ -17,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -82,6 +84,20 @@ public class StarServiceImpl implements StarService {
 
     @Override
     public String exportStars() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+
+        final List<Star> stars = this.starRepository.findAllByStarTypeAndObserversIsNullOrderByLightYears(StarTypeEnum.RED_GIANT);
+
+        stars.forEach(star -> sb.append(String.format(Locale.US,
+                                "Star: %s\n" +
+                                        "   *Distance: %.2f light years\n" +
+                                        "   **Description: %s\n" +
+                                        "   ***Constellation: %s",
+                star.getName(),
+                star.getLightYears(),
+                star.getDescription(),
+                star.getConstellation().getName())).append(System.lineSeparator()));
+
+        return sb.toString().trim();
     }
 }

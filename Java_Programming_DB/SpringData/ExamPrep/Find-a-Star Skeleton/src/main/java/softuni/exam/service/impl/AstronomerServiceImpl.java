@@ -74,12 +74,12 @@ public class AstronomerServiceImpl implements AstronomerService {
 
             this.astronomerRepository.save(astronomer);
 
-            sb.append(String.format(Locale.US,"Successfully imported astronomer % %s - %.2f",
+            sb.append(String.format(Locale.US,"Successfully imported astronomer %s %s - %.2f",
                     astronomerSeedDto.getFirstName(),
                     astronomerSeedDto.getLastName(),
-                    astronomerSeedDto.getAverageObservationHours()));
+                    astronomerSeedDto.getAverageObservationHours())).append(System.lineSeparator());
 
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 }
