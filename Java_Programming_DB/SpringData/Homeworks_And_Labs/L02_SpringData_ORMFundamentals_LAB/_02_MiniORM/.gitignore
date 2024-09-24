@@ -4,10 +4,10 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-../../L02_SpringData_ORMFundamentals_LAB/_02_MiniORM/.idea/modules.xml
-../../L02_SpringData_ORMFundamentals_LAB/_02_MiniORM/.idea/jarRepositories.xml
-../../L02_SpringData_ORMFundamentals_LAB/_02_MiniORM/.idea/compiler.xml
-../../L02_SpringData_ORMFundamentals_LAB/_02_MiniORM/.idea/libraries/
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
 *.iws
 *.iml
 *.ipr
