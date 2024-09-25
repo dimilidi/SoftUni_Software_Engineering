@@ -5,6 +5,12 @@ import java.sql.SQLException;
 
 public interface DatabaseContext<E> {
 
+    void createTable(Class<E> entityClass) throws SQLException;
+
+    void doAlter(E entity) throws SQLException;
+
+    boolean delete(E entity) throws SQLException, IllegalAccessException;
+
     boolean persist(E entity) throws SQLException, IllegalAccessException;
 
     Iterable<E> find(Class<E> table) throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;

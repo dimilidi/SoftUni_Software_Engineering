@@ -16,6 +16,9 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "age")
     private int age;
 
@@ -60,5 +63,13 @@ public class User {
 
     public void setRegistration(LocalDate registration) {
         this.registration = registration;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
