@@ -12,11 +12,10 @@ public class _05EmployeesFromDepartment {
 
     public static final String DEPARTMENT_NAME = "Research and Development";
     public static final String GET_EMPLOYEES_FROM_DEPARTMENT = "SELECT e FROM Employee e " +
-                                                                "JOIN e.department d " +
-                                                                "WHERE d.name = :departmentName " +
+                                                                "WHERE e.department.name = :departmentName " +
                                                                 "ORDER BY e.salary, e.id";
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         EntityManager manager = JpaUtil.getEntityManager();
         manager.getTransaction().begin();
 

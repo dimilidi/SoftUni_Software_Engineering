@@ -20,7 +20,8 @@ public class _09FindLatest10Projects {
         manager.createQuery(GET_LAST_STARTED_PROJECTS, Project.class)
                 .setMaxResults(10)
                 .getResultList()
-                .stream().sorted(Comparator.comparing(Project::getName))
+                .stream()
+                .sorted(Comparator.comparing(Project::getName))
                 .forEach(System.out::println);
 
         manager.getTransaction().commit();

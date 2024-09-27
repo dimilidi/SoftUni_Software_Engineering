@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 
 public class _07AddressesWithEmployeeCount {
 
-    public static final String FIND_ALL_ADDRESSES = "FROM Address  a ORDER BY a.employees.size DESC";
+    public static final String FIND_ALL_ADDRESSES = "FROM Address a ORDER BY a.employees.size DESC";
 
     public static void main(String[] args) {
         EntityManager manager = JpaUtil.getEntityManager();

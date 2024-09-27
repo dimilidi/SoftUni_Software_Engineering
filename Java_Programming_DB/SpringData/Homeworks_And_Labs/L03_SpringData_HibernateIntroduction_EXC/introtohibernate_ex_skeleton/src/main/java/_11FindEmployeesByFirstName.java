@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 
 public class _11FindEmployeesByFirstName {
 
-    public static final String FIND_USER_BY_FIRSTNAME_PATTERN = "FROM Employee e WHERE e.firstName LIKE :pattern";
+    public static final String FIND_USER_BY_FIRSTNAME_PATTERN = "FROM Employee e WHERE e.firstName LIKE CONCAT(:pattern, '%')";
 
     public static void main(String[] args) throws IOException {
         EntityManager manager = JpaUtil.getEntityManager();
@@ -36,7 +36,7 @@ public class _11FindEmployeesByFirstName {
 
     private static void getEmployees(EntityManager manager, String patternInput) {
          manager.createQuery(FIND_USER_BY_FIRSTNAME_PATTERN, Employee.class)
-                .setParameter("pattern", patternInput + "%")
+                .setParameter("pattern", patternInput)
                 .getResultList()
                 .forEach(e -> System.out.println(e.report(true)));;
     }

@@ -149,7 +149,7 @@ public class Employee {
     public void increaseSalary() {
         if (salary != null) {
             // Increase the salary by 12%
-            setSalary(salary.add(salary.multiply(BigDecimal.valueOf(0.12))));
+            setSalary(salary.multiply(BigDecimal.valueOf(1.12)));
         }
     }
 
