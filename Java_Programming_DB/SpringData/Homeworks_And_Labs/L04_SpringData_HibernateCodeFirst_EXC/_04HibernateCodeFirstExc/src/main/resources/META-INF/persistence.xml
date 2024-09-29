@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="gringotts">
+        <class>entities._01Gringotts.WizardDeposit</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/gringotts?createDatabaseIfNotExist=true" />
+            <property name="jakarta.persistence.jdbc.user"
+                      value="root" />
+            <property name="jakarta.persistence.jdbc.password"
+                      value="ilove2read" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+            <property name="hibernate.format_sql"
+                      value="true" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="sales">
+        <class>entities._02Sales.Product</class>
+        <class>entities._02Sales.Customer</class>
+        <class>entities._02Sales.StoreLocation</class>
+        <class>entities._02Sales.Sale</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/sales?createDatabaseIfNotExist=true" />
+            <property name="jakarta.persistence.jdbc.user"
+                      value="root" />
+            <property name="jakarta.persistence.jdbc.password"
+                      value="ilove2read" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+            <property name="hibernate.format_sql"
+                      value="true" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="university">
+        <class>entities._03UniversitySystem.Person</class>
+        <class>entities._03UniversitySystem.Teacher</class>
+        <class>entities._03UniversitySystem.Student</class>
+        <class>entities._03UniversitySystem.Course</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/university?createDatabaseIfNotExist=true" />
+            <property name="jakarta.persistence.jdbc.user"
+                      value="root" />
+            <property name="jakarta.persistence.jdbc.password"
+                      value="ilove2read" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+            <property name="hibernate.format_sql"
+                      value="true" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="hospital">
+        <class>entities._04Hospital.Diagnose</class>
+        <class>entities._04Hospital.Medicament</class>
+        <class>entities._04Hospital.Patient</class>
+        <class>entities._04Hospital.Visitation</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/hospital?createDatabaseIfNotExist=true" />
+            <property name="jakarta.persistence.jdbc.user"
+                      value="root" />
+            <property name="jakarta.persistence.jdbc.password"
+                      value="ilove2read" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+            <property name="hibernate.format_sql"
+                      value="true" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="billing_system">
+        <class>entities._05BillsPaymentSystem.BankAccount</class>
+        <class>entities._05BillsPaymentSystem.BillingDetail</class>
+        <class>entities._05BillsPaymentSystem.CreditCard</class>
+        <class>entities._05BillsPaymentSystem.User</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/billing_system?createDatabaseIfNotExist=true" />
+            <property name="jakarta.persistence.jdbc.user"
+                      value="root" />
+            <property name="jakarta.persistence.jdbc.password"
+                      value="ilove2read" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+            <property name="hibernate.format_sql"
+                      value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>
