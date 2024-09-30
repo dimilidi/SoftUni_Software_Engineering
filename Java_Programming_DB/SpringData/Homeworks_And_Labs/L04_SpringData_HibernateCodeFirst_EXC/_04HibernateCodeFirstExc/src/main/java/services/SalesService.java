@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import entities._02Sales.Customer;
 import entities._02Sales.Product;

@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import entities._01Gringotts.WizardDeposit;
 import jakarta.persistence.EntityManager;

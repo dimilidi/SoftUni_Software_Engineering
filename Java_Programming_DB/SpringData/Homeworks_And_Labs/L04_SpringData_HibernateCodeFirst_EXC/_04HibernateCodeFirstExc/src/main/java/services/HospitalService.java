@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import entities._04Hospital.*;
 import jakarta.persistence.EntityManager;

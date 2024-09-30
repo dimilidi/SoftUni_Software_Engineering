@@ -1,4 +1,4 @@
-package service;
+package services;
 /*
 _06FootballBetting
 •	Teams – Id, Name, Logo, 3 letter Initials (JUV, LIV, ARS…), Primary Kit Color, Secondary Kit Color, Town, Budget
@@ -34,14 +34,10 @@ The relationships between the tables are as follows:
 •	Each bet for the given game must have a prediction result.
 •	A bet can be placed by only one user and one user can place many bets.*/
 
-import entities._01Gringotts.WizardDeposit;
 import jakarta.persistence.EntityManager;
 import utils.JpaUtil;
 
-import static constants.Constants.AGE;
-import static constants.Constants.LAST_NAME;
 import static enums.PersistenceUnitName.FOOTBALL_BETTING;
-import static enums.PersistenceUnitName.GRINGOTTS;
 
 public class FootballBettingService {
     private static FootballBettingService instance;

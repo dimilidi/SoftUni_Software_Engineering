@@ -1,4 +1,4 @@
-import service.*;
+import services.*;
 
 import java.util.Scanner;
 

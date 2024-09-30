@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import entities._03UniversitySystem.Course;
 import entities._03UniversitySystem.Student;
