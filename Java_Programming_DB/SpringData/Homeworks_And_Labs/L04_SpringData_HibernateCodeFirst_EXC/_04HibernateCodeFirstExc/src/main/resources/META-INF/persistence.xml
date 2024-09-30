@@ -137,4 +137,44 @@
                       value="true" />
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="football_betting">
+        <class>entities._06FootballBetting.Competition</class>
+        <class>entities._06FootballBetting.CompetitionType</class>
+        <class>entities._06FootballBetting.Game</class>
+        <class>entities._06FootballBetting.Player</class>
+        <class>entities._06FootballBetting.PlayerStatistics</class>
+        <class>entities._06FootballBetting.Position</class>
+        <class>entities._06FootballBetting.Round</class>
+        <class>entities._06FootballBetting.Bet</class>
+        <class>entities._06FootballBetting.Continent</class>
+        <class>entities._06FootballBetting.Country</class>
+        <class>entities._06FootballBetting.Town</class>
+        <class>entities._06FootballBetting.Team</class>
+        <class>entities._06FootballBetting.User</class>
+        <class>entities._06FootballBetting.ResultPrediction</class>
+        <class>entities._06FootballBetting.Color</class>
+        <class>entities._06FootballBetting.BetGames</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/football_betting?createDatabaseIfNotExist=true" />
+            <property name="jakarta.persistence.jdbc.user"
+                      value="root" />
+            <property name="jakarta.persistence.jdbc.password"
+                      value="ilove2read" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.mysql.cj.jdbc.Driver" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+            <property name="hibernate.format_sql"
+                      value="true" />
+        </properties>
+    </persistence-unit>
 </persistence>

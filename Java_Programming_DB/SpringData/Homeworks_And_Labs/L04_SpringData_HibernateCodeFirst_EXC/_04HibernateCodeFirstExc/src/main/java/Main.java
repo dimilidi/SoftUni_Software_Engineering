@@ -44,7 +44,7 @@ public class Main {
                 return executedTaskNumber(taskNumber);
             }
             case 6 -> {
-                /* persistenceUnitName = FOOTBALL_BETTING.getPersistenceUnitName();*/
+                FootballBettingService.getInstance().executeTaskSix();
                 return executedTaskNumber(taskNumber);
             }
             default -> {
