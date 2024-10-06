@@ -12,21 +12,16 @@ public class Order extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User buyer;
 
-    @ManyToMany(cascade = CascadeType.ALL,
-            targetEntity = Game.class,
-            fetch = FetchType.EAGER)
-    @JoinTable(name = "orders_products",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Game> products;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Game> games;
 
     public Order() {
-        this.products = new HashSet<>();
+        this.games = new HashSet<>();
     }
 
     public Order(User buyer, Set<Game> games) {
         this.buyer = buyer;
-        this.products = games;
+        this.games = games;
     }
 
     public User getBuyer() {
@@ -37,11 +32,11 @@ public class Order extends BaseEntity {
         this.buyer = buyer;
     }
 
-    public Set<Game> getProducts() {
-        return products;
+    public Set<Game> getGames() {
+        return games;
     }
 
-    public void setProducts(Set<Game> products) {
-        this.products = products;
+    public void setGames(Set<Game> games) {
+        this.games = games;
     }
 }

@@ -29,4 +29,9 @@ public class GameTitlePriceDTO {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %.2f%n", this.title, this.price);
+    }
 }

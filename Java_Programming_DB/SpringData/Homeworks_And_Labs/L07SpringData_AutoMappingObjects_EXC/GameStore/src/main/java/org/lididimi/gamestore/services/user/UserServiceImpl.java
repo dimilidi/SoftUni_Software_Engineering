@@ -13,7 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,68 +37,53 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String registerUser(String[] args) {
-
         final String email = args[0];
         final String password = args[1];
         final String confirmPassword = args[2];
         final String fullName = args[3];
 
-        final UserRegisterDTO userRegisterDTO;
-
         try {
-            userRegisterDTO = new UserRegisterDTO(email, password, confirmPassword, fullName);
+            UserRegisterDTO userRegisterDTO = new UserRegisterDTO(email, password, confirmPassword, fullName);
+
+            if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
+                return EMAIL_ALREADY_EXISTS;
+            }
+
+            User user = this.mapper.map(userRegisterDTO, User.class);
+            user.setAdministrator(this.userRepository.count() == 0);
+            this.userRepository.save(user);
+
+            return userRegisterDTO.successfulRegisteredUser();
         } catch (IllegalArgumentException e) {
             return e.getMessage();
         }
-
-        boolean isUserFound = this.userRepository.existsByEmail(userRegisterDTO.getEmail());
-
-        if (isUserFound) {
-            return EMAIL_ALREADY_EXISTS;
-        }
-
-        final User user = this.mapper.map(userRegisterDTO, User.class);
-
-        user.setAdministrator(this.userRepository.count() == 0);
-
-        this.userRepository.save(user);
-
-        return userRegisterDTO.successfulRegisteredUser();
     }
+
 
     @Override
     public String loginUser(String[] userData) {
-
         if (this.loggedInUser != null) {
             return USER_ALREADY_LOGGED_IN;
         }
 
-        final String email = userData[0];
-        final String password = userData[1];
+        UserLoginDTO userLoginDTO = new UserLoginDTO(userData[0], userData[1]);
 
-        final UserLoginDTO userLoginDTO = new UserLoginDTO(email, password);
-
-        final Optional<User> user = this.userRepository.findByEmailAndPassword(userLoginDTO.getEmail(), userLoginDTO.getPassword());
-
-        if (user.isPresent() && this.loggedInUser == null) {
-
-            this.loggedInUser = this.userRepository.findByEmail(userLoginDTO.getEmail()).get();
-
-            return String.format(USER_LOGGED_IN_SUCCESSFULLY, this.loggedInUser.getFullName());
-        }
-
-        return String.format(USERNAME_OR_PASSWORD_NOT_VALID_MESSAGE);
+        return userRepository.findByEmailAndPassword(userLoginDTO.getEmail(), userLoginDTO.getPassword())
+                .map(user -> {
+                    this.loggedInUser = user;
+                    return String.format(USER_LOGGED_IN_SUCCESSFULLY, this.loggedInUser.getFullName());
+                })
+                .orElse(String.format(USERNAME_OR_PASSWORD_NOT_VALID_MESSAGE));
     }
+
 
     @Override
     public String logoutUser() {
-
         if (this.loggedInUser == null) {
             return USER_CANNOT_LOGGED_IN;
         }
 
         final String fullName = this.loggedInUser.getFullName();
-
         this.loggedInUser = null;
 
         return String.format(USER_LOGGED_OUT_SUCCESSFULLY, fullName);
@@ -106,53 +91,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUserOwnedGames() {
-
         if (this.loggedInUser == null) {
             return USER_MUST_BE_LOGGED_IN;
         }
 
-        final User user = this.userRepository.findUserById(this.loggedInUser.getId()).get();
-        final Set<Game> ownedGames = user.getGames();
+        User user = this.userRepository.findById(this.loggedInUser.getId())
+                .orElseThrow(() -> new IllegalStateException(USER_MUST_BE_LOGGED_IN));
+
+        Set<Game> ownedGames = user.getGames();
 
         if (ownedGames.isEmpty()) {
             return String.format(USER_DOES_NOT_OWN_GAMES, user.getFullName());
         }
 
-        final Set<UserOwnedGameTitlesDTO> userOwnedGameTitlesDTOS =
-                ownedGames
-                        .stream()
-                        .map(e -> mapper.map(e, UserOwnedGameTitlesDTO.class))
-                        .collect(Collectors.toSet());
+        String ownedGamesTitles = ownedGames.stream()
+                .map(game -> mapper.map(game, UserOwnedGameTitlesDTO.class).getTitle())
+                .collect(Collectors.joining(System.lineSeparator()));
 
-        final StringBuilder sb = new StringBuilder();
-        sb.append(String.format(USER_OWNS_GAMES, user.getFullName()))
-                .append(System.lineSeparator());
-
-        userOwnedGameTitlesDTOS
-                .forEach(e -> sb.append(e.getTitle())
-                        .append(System.lineSeparator()));
-
-        return sb.toString().trim();
+        return String.format(USER_OWNS_GAMES, user.getFullName()) + System.lineSeparator() + ownedGamesTitles;
     }
+
 
     @Override
     @Transactional
     public String addItemToShoppingCart(String[] data) {
-
         if (this.loggedInUser == null) {
             return USER_MUST_BE_LOGGED_IN;
         }
 
         final String title = data[0];
+        final Game game = gameRepository.findFirstByTitle(title)
+                .orElseThrow(() -> new NoSuchElementException(String.format(GAME_TITLE_DOES_NOT_EXISTS, title)));
 
-        final Optional<Game> gameByTitle = this.gameRepository.findFirstByTitle(title);
-
-        if (gameByTitle.isEmpty()) {
-            return String.format(GAME_TITLE_DOES_NOT_EXISTS, title);
-        }
-
-        final User user = this.userRepository.findUserById(this.loggedInUser.getId()).get();
-        final Game game = gameByTitle.get();
+        final User user = userRepository.findUserById(this.loggedInUser.getId()).get();
 
         if (hasUserBoughtTitle(title, user)) {
             return String.format(USER_ALREADY_BOUGHT_TITLE, title);
@@ -165,8 +136,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.getShoppingCart().add(game);
-
-        this.userRepository.save(user);
+        userRepository.save(user);
 
         return String.format(GAME_ADDED_TO_CART_SUCCESSFULLY, title);
     }
@@ -174,18 +144,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String removeItemFromShoppingCart(String[] data) {
-
         if (this.loggedInUser == null) {
             return USER_MUST_BE_LOGGED_IN;
         }
 
         final String title = data[0];
 
-        final Optional<Game> gameByTitle = this.gameRepository.findFirstByTitle(title);
-
-        if (gameByTitle.isEmpty()) {
-            return String.format(GAME_TITLE_DOES_NOT_EXISTS, title);
-        }
+        gameRepository.findFirstByTitle(title)
+                .orElseThrow(() -> new NoSuchElementException(String.format(GAME_TITLE_DOES_NOT_EXISTS, title)));
 
         final User user = this.userRepository.findUserById(this.loggedInUser.getId()).get();
 
@@ -193,50 +159,44 @@ public class UserServiceImpl implements UserService {
             return SHOPPING_CART_EMPTY;
         }
 
-        for (Game currentGame : user.getShoppingCart()) {
-            if (currentGame.getTitle().equals(title)) {
-                user.getShoppingCart().remove(currentGame);
-                break;
-            }
-        }
-
-        this.userRepository.save(user);
+        user.getShoppingCart().removeIf(game -> game.getTitle().equals(title));
+        userRepository.save(user);
 
         return String.format(GAME_REMOVED_FROM_CART_SUCCESSFULLY, title);
     }
 
+
     @Override
     @Transactional
     public String buyItemsFromShoppingCart() {
-
         if (this.loggedInUser == null) {
             return USER_MUST_BE_LOGGED_IN;
         }
 
-        final User user = this.userRepository.findUserById(this.loggedInUser.getId()).get();
+        User user = this.userRepository.findById(this.loggedInUser.getId())
+                .orElseThrow(() -> new IllegalStateException(USER_MUST_BE_LOGGED_IN));
 
-        if (user.getShoppingCart().isEmpty()) {
+        Set<Game> shoppingCart = user.getShoppingCart();
+
+        if (shoppingCart.isEmpty()) {
             return SHOPPING_CART_EMPTY;
         }
 
-        final Set<Game> shoppingCart = new LinkedHashSet<>(user.getShoppingCart());
-
-        this.orderService.createOrder(user, shoppingCart);
-
-        user.getGames().addAll(user.getShoppingCart());
-
-        user.getShoppingCart().clear();
-
+        // Create an order and add the games to user's owned games
+        this.orderService.createOrder(user, new LinkedHashSet<>(shoppingCart));
+        user.getGames().addAll(shoppingCart);
+        shoppingCart.clear();
         this.userRepository.save(user);
 
-        final StringBuilder sb = new StringBuilder();
+        // Format the titles of purchased games
+        String boughtGames = shoppingCart.stream()
+                .map(Game::getTitle)
+                .map(title -> String.format(" -%s", title))
+                .collect(Collectors.joining(System.lineSeparator()));
 
-        shoppingCart
-                .forEach(e -> sb.append(String.format(" -%s", e.getTitle()))
-                        .append(System.lineSeparator()));
-
-        return String.format(SUCCESSFULLY_BOUGHT_GAMES, sb.toString().trim().replaceAll("(?m)^[ \t]*\r?\n", ""));
+        return String.format(SUCCESSFULLY_BOUGHT_GAMES, boughtGames);
     }
+
 
     @Override
     public User getLoggedInUser() {

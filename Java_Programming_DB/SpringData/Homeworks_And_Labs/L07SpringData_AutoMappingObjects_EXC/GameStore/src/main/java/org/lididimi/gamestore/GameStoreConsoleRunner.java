@@ -33,7 +33,6 @@ public class GameStoreConsoleRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //Separated by |
         System.out.print(ENTER_COMMAND);
         String input = scanner.nextLine();
 
