@@ -98,15 +98,6 @@ public class SeedServiceImpl implements SeedService {
         return PRODUCT_DATA_SEEDED_SUCCESSFULLY;
     }
 
-    private <T, R> List<R> parseJsonToList(String json, Class<T[]> dtoClass, Class<R> entityClass) {
-        // Parse JSON into array of DTOs
-        T[] dtoArray = this.gson.fromJson(json, dtoClass);
-
-        // Map each DTO to the target entity class (e.g., User.class)
-        return Arrays.stream(dtoArray)
-                .map(dto -> this.mapper.map(dto, entityClass))
-                .toList();
-    }
 
     private Product setRandomCategories(Product product) {
         Set<Category> categories =
@@ -164,5 +155,15 @@ public class SeedServiceImpl implements SeedService {
         user.setFriends(friends);
 */
         return user;
+    }
+
+    private <T, R> List<R> parseJsonToList(String json, Class<T[]> dtoClass, Class<R> entityClass) {
+        // Parse JSON into array of DTOs
+        T[] dtoArray = this.gson.fromJson(json, dtoClass);
+
+        // Map each DTO to the target entity class (e.g., User.class)
+        return Arrays.stream(dtoArray)
+                .map(dto -> this.mapper.map(dto, entityClass))
+                .toList();
     }
 }
