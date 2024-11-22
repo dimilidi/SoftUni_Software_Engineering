@@ -1,7 +1,16 @@
 package softuni.exam.repository;
 
-// TODO:
-public interface JobRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import softuni.exam.models.entity.Job;
 
+import java.util.List;
+import java.util.Optional;
 
+@Repository
+public interface JobRepository extends JpaRepository<Job, Long> {
+
+    Optional<Job> findByTitle(String jobTitle);
+
+    List<Job> findAllBySalaryGreaterThanEqualAndHoursAWeekLessThanEqualOrderBySalaryDesc(double salary, double hours);
 }
