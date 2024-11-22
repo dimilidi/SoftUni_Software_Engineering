@@ -1,0 +1,2 @@
+package softuni.exam.models.entity;public class BorrowingRecord {
+}
